@@ -1,6 +1,3 @@
-from barfi import st_barfi, barfi_schemas, Block
-import streamlit as st
-
 from barfi import Block
 
 feed = Block(name='Feed')
@@ -37,12 +34,69 @@ def result_func(self):
     in_1 = self.get_interface(name='Input 1')
 result.add_compute(result_func)
 
-load_schema = st.selectbox('Select a saved schema:', barfi_schemas())
+process_blocks = [feed, result, mixer, splitter]
 
-compute_engine = st.checkbox('Activate barfi compute engine', value=False)
+number_10 = Block(name='Number')
+number_10.add_output()
+def number_10_func(self):
+    self.set_interface(name='Output 1', value=10)
+number_10.add_compute(number_10_func)
 
-barfi_result = st_barfi(base_blocks=[feed, result, mixer, splitter],
-                    compute_engine=compute_engine, load_schema=load_schema)
+number_5 = Block(name='Number')
+number_5.add_output()
+def number_5_func(self):
+    self.set_interface(name='Output 1', value=5)
+number_5.add_compute(number_5_func)
 
-if barfi_result:
-    st.write(barfi_result)
+subtraction = Block(name='Subtraction')
+subtraction.add_input()
+subtraction.add_input()
+subtraction.add_output()
+def subtraction_func(self):
+    in_1 = self.get_interface(name='Input 1')
+    in_2 = self.get_interface(name='Input 2')
+    value = in_1 - in_2
+    self.set_interface(name='Output 1', value=value)    
+subtraction.add_compute(subtraction_func)
+
+addition = Block(name='Addition')
+addition.add_input()
+addition.add_input()
+addition.add_output()
+def addition_func(self):
+    in_1 = self.get_interface(name='Input 1')
+    in_2 = self.get_interface(name='Input 2')
+    value = in_1 + in_2
+    self.set_interface(name='Output 1', value=value)    
+addition.add_compute(addition_func)
+
+multiplication = Block(name='Multiplication')
+multiplication.add_input()
+multiplication.add_input()
+multiplication.add_output()
+def multiplication_func(self):
+    in_1 = self.get_interface(name='Input 1')
+    in_2 = self.get_interface(name='Input 2')
+    value = in_1 * in_2
+    self.set_interface(name='Output 1', value=value)    
+multiplication.add_compute(multiplication_func)
+
+division = Block(name='Addition')
+division.add_input()
+division.add_input()
+division.add_output()
+def division_func(self):
+    in_1 = self.get_interface(name='Input 1')
+    in_2 = self.get_interface(name='Input 2')
+    value = in_1 / in_2
+    self.set_interface(name='Output 1', value=value)    
+division.add_compute(division_func)
+
+result = Block(name='Result')
+result.add_input()
+def result_func(self):
+    in_1 = self.get_interface(name='Input 1')
+    print(in_1)
+result.add_compute(result_func)
+
+math_blocks = [number_10, number_5, result, addition, subtraction, multiplication, division]
